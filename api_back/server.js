@@ -1,5 +1,4 @@
 
-
 const express = require('express')
 const app = express()
 const mysql = require('promise-mysql')
@@ -54,7 +53,7 @@ mysql.createConnection({
     }, 10000)
     
     app.get('/', async (req, res, next)=>{
-        res.json({status: 200, msg: "Hello, bienvenue sur le projet Annonces"})
+        res.json({status: 200, msg: "Hello, bienvenue sur le projet DogWalker"})
     })
     
     //appel des routes

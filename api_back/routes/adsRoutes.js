@@ -1,5 +1,7 @@
+const express = require('express');
+const app = express();
+app.use(express.json()); // Middleware pour analyser le JSON
 const fs = require('fs');
-
 module.exports = (app, db) => {
     //route de récupération de toutes les annonces
     app.get('/api/v1/ads', async (req, res, next) => {
@@ -23,12 +25,22 @@ module.exports = (app, db) => {
 
     //route de sauvegarde d'une annonce 
     app.post('/api/v1/ads/save', async (req, res, next) => {
-        let ajout = await db.query('INSERT INTO ads (Title, Contents, Url, CreationTimesTamp) VALUES (?, ?, ?, NOW())', [req.body.Title, req.body.Contents, req.body.Url])
-        if (ajout.code) {
-            res.json({ status: 500, error_msg: ajout })
+        const { Title, Contents, Url } = req.body;
+    
+        // Vérification des données requises
+        if (!Title || !Contents || !Url) {
+            res.status(400).json({ error_msg: "Données manquantes" });
+            return;
         }
-        res.json({ status: 200, result: "Annonce enregistrée!" })
-    })
+    
+        try {
+            let ajout = await db.query('INSERT INTO ads (Title, Contents, Url, CreationTimesTamp) VALUES (?, ?, ?, NOW())', [Title, Contents, Url]);
+            res.json({ status: 200, result: "Annonce enregistrée!" });
+        } catch (error) {
+            res.status(500).json({ error_msg: error });
+        }
+    });
+    
 
     //route d'ajout d'une image dans l'api (stock une image et retourne au front le nom de l'image stocké)
     app.post('/api/v1/ads/pict', (req, res, next) => {
@@ -42,12 +54,16 @@ module.exports = (app, db) => {
         req.files.image.mv('public/images/' + req.files.image.name, (err) => {
             //si ça plante dans la callback
             if (err) {
-                res.json({ status: 500, msg: "La photo n'a pas pu être enregistrée", erro: err })
+                res.json({ status: 500, msg: "La photo n'a pas pu être enregistrée", error: err })
             }
         })
         //si c'est ok, on retourne un json avec le nom de la photo vers le front
         res.json({ status: 200, msg: "image bien enregistré!", url: req.files.image.name })
     })
+
+
+    
+    
 
     //route de modification d'une annonce
     app.put('/api/v1/ads/update/:id', async (req, res, next) => {
@@ -74,7 +90,7 @@ module.exports = (app, db) => {
             //suppression de l'image correspondant à l'article
             if (addBDD[0].Url !== "no-pict.webp") {
                 //supprime le fichier (photo) correspondant au nom de la photo enregistrée pour le produit dans la bdd, il supprime la photo dans le dossier static ou son stockées les images
-                fs.unlink(`public/images/${addBDD[0].url}`, (err) => {
+                fs.unlink(`public/images/${addBDD[0].Url}`, (err) => {
                     if (err) {
                         res.json({ status: 500, msg: "l'article est supprimé mais pas l'image!", err: err })
                     } else {
@@ -91,3 +107,7 @@ module.exports = (app, db) => {
 
 
 }
+
+
+
+
