@@ -1,0 +1,87 @@
+.App {
+  text-align: center;
+}
+
+header{
+  background-color: #282c34;
+  padding: 2%;
+
+}
+
+header nav {
+  display: flex;
+  justify-content: space-around;
+}
+header nav a{
+  color: white;
+  text-decoration: none;
+  font-size: 1.5em;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+.fontawesome{
+  margin-right: 20px;
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+  border: 3px solid #282c34;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+form input, form textarea{
+  width: 80%;
+  margin: 1% auto;
+  font-size: 1.5em;
+  padding: 1%;
+  border: 1px solid #282c34;
+  border-radius: 5px;
+}
+
+form button {
+  width: 60%;
+  margin: 1% auto;
+  padding: 1%;
+  border-radius: 5px;
+  background-color: #282c34;
+  color: white;
+  font-size: 1.5em;
+}
+
+.admin table{
+  width: 70%;
+  margin: 2% auto;
+  border-collapse: collapse;
+  border: 1px solid #282c34;
+}
+
+.admin th, .admin td{
+  border: 1px solid #282c34;
+  padding: 10px 0;
+}
+
+.admin a {
+  background-color: green;
+  text-decoration: none;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 1.5em;
+}
+
+.admin button {
+  background-color: red;
+  text-decoration: none;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1.5em;
+}
